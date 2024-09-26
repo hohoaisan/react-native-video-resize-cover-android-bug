@@ -3,13 +3,32 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-import { View, Text, ScrollView } from 'react-native';
-import Video from 'react-native-video';
+import { View, Text, ScrollView, ViewStyle } from 'react-native';
+// import Video from 'react-native-video';
+import { useVideoPlayer, VideoView } from 'expo-video';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+const Video = ({
+  source,
+  style,
+  paused,
+  resizeMode,
+}: {
+  source: { uri: string };
+  style: ViewStyle;
+  paused: boolean;
+  repeat: boolean;
+  resizeMode: 'contain' | 'cover' | 'fill';
+}) => {
+  const player = useVideoPlayer(source, (player) => {
+    player.play();
+  });
+  return <VideoView player={player} style={style} contentFit={resizeMode} nativeControls={false} />;
+};
 
 const verticalOne = (
   <View style={{ width: 200, height: 200, borderWidth: 2, borderColor: 'red', overflow: 'hidden' }}>
